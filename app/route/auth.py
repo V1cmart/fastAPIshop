@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from U
-from models.models import User
-from app.utils.security import hash_password, verify_password
-from app.database import get_db
+from schemas.Userschem import UserResponse, UserCreate
+from models.model import User
+from utils.security import hash_password, verify_password
+from database import get_db
 
-router = APIRouter(prefix="/users", tags=["users"])
+router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/", response_model=UserResponse)
