@@ -19,7 +19,6 @@ class UserUpdate(BaseModel):
 
 
 class UserResponse(UserBase):
-    id: int
     created_at: datetime
 
     class Config:
