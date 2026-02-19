@@ -1,12 +1,12 @@
 from fastapi import Depends, FastAPI
-from sqlalchemy import select, text
+
 from schemas.Userschem import UserResponse, UserCreate
-from database import engine, get_db, init_db
+from database import init_db
 import uvicorn
-from sqlalchemy.ext.asyncio import AsyncSession
-from models.model import User
-from utils.security import hash_password, verify_password
+
+
 from contextlib import asynccontextmanager
+
 from route.auth import router as auth_router
 from route.category import router as category_router
 from route.product import router as product_router
@@ -27,3 +27,7 @@ app.include_router(product_router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+
+{"name": "victortop", "email": "user466463@example.com", "password": "22222222"}
+
+{"name": "masha", "email": "user121334@example.com", "password": "12345678"}
