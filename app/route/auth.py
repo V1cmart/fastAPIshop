@@ -27,7 +27,7 @@ async def login(
     return {"access_token": str(user.id), "token_type": "bearer"}
 
 
-@router.post("/", response_model=UserResponse)
+@router.post("/create_user", response_model=UserResponse)
 async def create_user(user: UserCreate, db: AsyncSession = Depends(get_db)):
     hashed_password = hash_password(user.password)
     user_data = user.model_dump(exclude={"password"})
@@ -40,7 +40,7 @@ async def create_user(user: UserCreate, db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/me", response_model=UserResponse)
-async def get_me(current_user: User = Depends(get_current_user)):
+async def get_me(current_user: User = Depends(get_current_user)) -> User:
     return current_user
 
 

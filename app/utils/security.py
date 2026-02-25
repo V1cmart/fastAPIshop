@@ -15,7 +15,7 @@ from schemas.Userschem import UserResponse, UserCreate
 from database import get_db
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -37,14 +37,15 @@ async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
 
 
 async def fake_decode_token(token, db: AsyncSession):
-    user = await get_user(int(token), db)
+    user = await get_user(token, db)
     return user
 
 
 async def get_current_user(
     token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)
 ):
-    user = await fake_decode_token(token, db)
+    int_user = int(token)
+    user = await fake_decode_token(int_user, db)
     if not user:
         raise HTTPException(detail="Invalid authentication credentials")
 
