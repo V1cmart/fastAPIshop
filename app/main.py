@@ -1,9 +1,7 @@
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 
-from schemas.Userschem import UserResponse, UserCreate
 from database import init_db
 import uvicorn
-
 
 from contextlib import asynccontextmanager
 

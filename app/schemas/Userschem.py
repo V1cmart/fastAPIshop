@@ -20,6 +20,7 @@ class UserUpdate(BaseModel):
 
 class UserResponse(UserBase):
     created_at: datetime
+    id: int
 
     class Config:
         from_attributes = True

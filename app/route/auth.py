@@ -12,6 +12,8 @@ from database import get_db
 
 from utils.security import get_current_user, oauth2_scheme
 
+from typing import List
+
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
@@ -22,7 +24,7 @@ async def login(
     result = await db.execute(select(User).filter(User.name == form_data.username))
     user = result.scalars().one_or_none()
     if user is None or not verify_password(form_data.password, user.hashed_password):
-        return {"error": "Invalid username or password"}
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
 
     return {"access_token": str(user.id), "token_type": "bearer"}
 
@@ -44,6 +46,16 @@ async def get_me(current_user: User = Depends(get_current_user)) -> User:
     return current_user
 
 
+@router.get("/users", response_model=List[UserResponse])
+async def get_all_users(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    result = await db.execute(select(User))
+    users = result.scalars().all()
+    return users
+
+
 @router.get("/{user_id}", response_model=UserResponse)
 async def get_user(
     user_id: int,
@@ -57,8 +69,11 @@ async def get_user(
     return db_user
 
 
-@router.get("/users")
-async def get_all_users(db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(User))
-    users = result.scalars().all()
-    return users
+# @router.get("/users", response_model=List[UserResponse])
+# async def get_all_users(
+#     db: AsyncSession = Depends(get_db),
+#     current_user: User = Depends(get_current_user),
+# ):
+#     result = await db.execute(select(User))
+#     users = result.scalars().all()
+#     return users
