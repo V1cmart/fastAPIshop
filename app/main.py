@@ -26,10 +26,14 @@ app.include_router(product_router)
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
 
-
-# {"name": "masha", "email": "user121334@example.com", "password": "12345678"}
-# {
 #   "name": "vicmart",
 #   "email": "user211343@example.com",
 #   "password": "555555555"
+# }
+# {
+#   "name": "templar",
+#   "email": "use4324325353r@example.com",
+#   "created_at": "2026-03-11T10:02:03.786202",
+#   "password: 7777777777"
+#   "id": 22
 # }

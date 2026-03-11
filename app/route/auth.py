@@ -6,13 +6,26 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from schemas.Userschem import UserResponse, UserCreate
 from models.model import User
-from utils.security import hash_password, verify_password
+from utils.security import (
+    hash_password,
+    verify_password,
+    authenticate_user,
+    create_access_token,
+    Token,
+)
 
 from database import get_db
 
 from utils.security import get_current_user, oauth2_scheme
 
 from typing import List
+
+from dotenv import load_dotenv
+from os import getenv
+from datetime import timedelta
+
+
+ACCESS_TOKEN_EXPIRE_MINUTES = int(getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -21,12 +34,12 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 async def login(
     form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)
 ):
-    result = await db.execute(select(User).filter(User.name == form_data.username))
-    user = result.scalars().one_or_none()
-    if user is None or not verify_password(form_data.password, user.hashed_password):
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
-
-    return {"access_token": str(user.id), "token_type": "bearer"}
+    user = await authenticate_user(form_data.username, form_data.password, db)
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.name}, expires_delta=access_token_expires
+    )
+    return Token(access_token=access_token, token_type="bearer")
 
 
 @router.post("/create_user", response_model=UserResponse)
