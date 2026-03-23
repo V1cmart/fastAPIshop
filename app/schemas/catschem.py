@@ -14,7 +14,8 @@ class CatSchema(BaseModel):
     #     return self
 
 
-class CatResponse(CatSchema):
+class CatResponse(BaseModel):
+    name: str = Field(..., max_length=100)
     id: int
 
     class Config:

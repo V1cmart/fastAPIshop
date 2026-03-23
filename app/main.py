@@ -17,7 +17,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(lifespan=lifespan, title="ElectronicShop")
 
 app.include_router(auth_router)
 app.include_router(category_router)

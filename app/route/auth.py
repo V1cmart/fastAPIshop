@@ -16,16 +16,13 @@ from utils.security import (
 
 from database import get_db
 
-from utils.security import get_current_user, oauth2_scheme
+from utils.security import get_current_user, ACCESS_TOKEN_EXPIRE_MINUTES
 
 from typing import List
 
 from dotenv import load_dotenv
 from os import getenv
 from datetime import timedelta
-
-
-ACCESS_TOKEN_EXPIRE_MINUTES = int(getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
