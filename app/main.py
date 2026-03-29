@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from database import init_db
+from database import init_db, close_db
 import uvicorn
 
 from contextlib import asynccontextmanager
@@ -15,6 +15,8 @@ async def lifespan(app: FastAPI):
     await init_db()
 
     yield
+
+    await close_db()
 
 
 app = FastAPI(lifespan=lifespan, title="ElectronicShop")

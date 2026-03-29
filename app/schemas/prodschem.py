@@ -18,3 +18,12 @@ class ProductBase(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class ProductResponce(BaseModel):
+    name: str = Field(..., max_length=255)
+    description: str = Field(..., max_length=1000)
+    price: Decimal
+
+    class Config:
+        from_attributes = True
