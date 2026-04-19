@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+
 from database import init_db, close_db
 import uvicorn
 
@@ -37,14 +38,9 @@ app.include_router(product_router)
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
 
-#   "name": "vicmart",
-#   "email": "user211343@example.com",
-#   "password": "555555555"
-# }
 # {
-#   "name": "templar",
-#   "email": "use4324325353r@example.com",
-#   "created_at": "2026-03-11T10:02:03.786202",
-#   "password: 7777777777"
-#   "id": 22
+#   "name": "victor",
+#   "email": "user123456@example.com",
+#   "password": "55555555",
+#   "is_admin": true
 # }

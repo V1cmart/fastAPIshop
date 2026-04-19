@@ -4,12 +4,18 @@ from schemas.prodschem import ProductBase, ProductResponce
 from database import get_db
 from models.model import Product
 from utils.product_tuls import create_prod, get_prod, del_prod
+from utils.security import get_current_user
+from models.model import User
 
 router = APIRouter(prefix="/products", tags=["products"])
 
 
 @router.post("/", response_model=ProductResponce)
-async def create_product(product: ProductBase, db: AsyncSession = Depends(get_db)):
+async def create_product(
+    product: ProductBase,
+    db: AsyncSession = Depends(get_db),
+    admin: User = Depends(get_current_user),
+):
     prod_db = await create_prod(product, db)
     return prod_db
 
@@ -20,7 +26,7 @@ async def get_product(product_name: str, db: AsyncSession = Depends(get_db)):
     return prod_db
 
 
-@router.delete("/del product", response_model=ProductResponce)
+@router.delete("/del_product", response_model=ProductResponce)
 async def delete_product(product: str, db: AsyncSession = Depends(get_db)):
     result = await del_prod(product, db)
     return result

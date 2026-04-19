@@ -10,6 +10,7 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str = Field(..., min_length=8, max_length=70)
+    is_admin: bool = False
 
 
 class UserUpdate(BaseModel):
